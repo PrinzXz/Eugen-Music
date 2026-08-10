@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/banner.png" width="150" alt="Eugen Music Logo">
+  <img src="assets/banner.png" width="150" alt="Eugen Music Banner">
   <br>
   <h1>🎵 Eugen Music</h1>
   <p><b>Advanced, High-Performance Discord Music Bot powered by Shoukaku & Lavalink</b></p>
