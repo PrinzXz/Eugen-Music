@@ -24,13 +24,13 @@ module.exports = {
             const required = Math.ceil(memberCount / 2);
             dispatcher.skipVotes.add(ctx.user.id);
             if (dispatcher.skipVotes.size >= required) {
-                dispatcher.skip();
+                dispatcher.skipAndRemove();
                 return ctx.send(`${e.success} ${ctx.t('skip.vote_passed')}`);
             }
             return ctx.sendTemporary(`${e.success} ${ctx.t('skip.vote_added', { current: dispatcher.skipVotes.size, required })}`);
         }
 
-        dispatcher.skip();
+        dispatcher.skipAndRemove();
         return ctx.send(`${e.skip} ${ctx.t('skip.skipped')}`);
     },
 };

@@ -387,13 +387,13 @@ class Dispatcher {
                     this.skipVotes.add(interaction.user.id);
                     if (this.skipVotes.size >= required) {
                         await interaction.deferUpdate().catch(() => {});
-                        this.skip();
+                        this.skipAndRemove();
                     } else {
                         await interaction.reply({ content: `${e.success} ${LocaleManager.t(lang, 'dispatcher.vote_skip', { current: this.skipVotes.size, required })}`, flags: 64 });
                     }
                 } else {
                     await interaction.deferUpdate().catch(() => {});
-                    this.skip();
+                    this.skipAndRemove();
                 }
                 break;
             }
@@ -467,11 +467,14 @@ class Dispatcher {
             this._editNowPlayingEnd(wasError);
 
             if (this.current) {
-                if (this.loop === 'track') {
-                    this.queue.unshift(this.current);
-                } else if (this.loop === 'queue') {
-                    this.queue.push(this.current);
+                if (!this.forceRemove) {
+                    if (this.loop === 'track') {
+                        this.queue.unshift(this.current);
+                    } else if (this.loop === 'queue') {
+                        this.queue.push(this.current);
+                    }
                 }
+                this.forceRemove = false;
 
                 if (this.current.info.identifier) {
                     this.history.push(this.current.info.identifier);
@@ -515,6 +518,11 @@ class Dispatcher {
     }
 
     skip() {
+        this.player.stopTrack();
+    }
+
+    skipAndRemove() {
+        this.forceRemove = true;
         this.player.stopTrack();
     }
 
