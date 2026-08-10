@@ -57,19 +57,11 @@ module.exports = {
     },
     lavalink: [
         {
-            name: 'Eugen Private Node',
-            url: '38.45.71.27:2017',
-            auth: 'eugenmsc',
-            secure: false
-        }
-        /*
-        ,{
             name: 'AjieBlogs Public Node (V4)',
             url: 'lava-v4.ajieblogs.eu.org:443',
             auth: 'https://dsc.gg/ajidevserver',
             secure: true
         },
-        ... (public nodes)
-        */
+        // ... (public nodes)
     ]
 };
