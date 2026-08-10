@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/logo.png" width="150" alt="Eugen Music Logo">
+  <img src="assets/banner.png" width="150" alt="Eugen Music Logo">
   <br>
   <h1>🎵 Eugen Music</h1>
   <p><b>Advanced, High-Performance Discord Music Bot powered by Shoukaku & Lavalink</b></p>
@@ -9,6 +9,7 @@
 ---
 
 ## ✨ Features
+
 - **High Performance:** Uses `shoukaku` (Lavalink wrapper) for minimal resource footprint and ultra-low latency.
 - **Hybrid i18n (Multi-Language):** Features an advanced multi-language system. The bot responds to the command invoker in their preferred language, while public announcements (like "Now Playing") respect the DJ's language.
 - **Dynamic UI:** Features Discord UI components (Buttons, Select Menus) for Queue management, Lyrics, and Now Playing.
@@ -19,19 +20,23 @@
 - **Owner & Trusted System:** Prevent trolls from hijacking the music session by claiming ownership of the DJ session.
 
 ## 🚀 Installation & Setup
+
 1. **Clone the repository:**
+
    ```bash
    git clone https://github.com/PrinzXz/Eugen-Music.git
    cd Eugen-Music
    ```
 
 2. **Install dependencies:**
+
    ```bash
    npm install
    ```
 
 3. **Configure Environment:**
    Create a `.env` file in the root directory:
+
    ```env
    TOKEN=your_discord_bot_token
    PREFIX=e.
@@ -47,11 +52,14 @@
    ```
 
 ## 🌐 Multi-Language Support
+
 Users can set their preferred language by running:
+
 - `/language en` (English)
 - `/language id` (Indonesian)
 
 Want to add a new language? Simply create a new `es.json` or `jp.json` file inside `src/locales/`!
 
 ---
+
 > Made with ❤️ for Discord Communities.
