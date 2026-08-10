@@ -60,6 +60,26 @@ Users can set their preferred language by running:
 
 Want to add a new language? Simply create a new `es.json` or `jp.json` file inside `src/locales/`!
 
+## 🎨 Custom Emojis Setup
+
+This bot uses custom emojis for its UI components (buttons, select menus, messages). 
+To ensure the UI looks correct, you must upload the provided emojis to your own Discord server or a dedicated emoji server:
+
+1. Locate the `custom_emojis` folder in this repository.
+2. Go to your Discord Server Settings > **Emoji**.
+3. Upload all the `.png` or `.gif` files from the `custom_emojis` folder.
+4. (Optional) If the emoji names or IDs change, you can update them in `src/structures/ActionUtils.js` or `config.js` to match your newly uploaded emojis.
+
 ---
 
-> Made with ❤️ for Discord Communities.
+## 🤝 Credits & Contributors
+
+A massive thank you to all the contributors who helped make this project possible. Pull requests are always welcome!
+
+<a href="https://github.com/PrinzXz/Eugen-Music/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=PrinzXz/Eugen-Music" />
+</a>
+
+---
+
+> A **PX - Team** Project | Made with ❤️ for Discord Communities.
