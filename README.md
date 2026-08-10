@@ -63,12 +63,13 @@ Want to add a new language? Simply create a new `es.json` or `jp.json` file insi
 ## 🎨 Custom Emojis Setup
 
 This bot uses custom emojis for its UI components (buttons, select menus, messages). 
-To ensure the UI looks correct, you must upload the provided emojis to your own Discord server or a dedicated emoji server:
+To ensure the UI looks correct, you must upload the provided emojis to your Bot's Application on the Discord Developer Portal:
 
 1. Locate the `custom_emojis` folder in this repository.
-2. Go to your Discord Server Settings > **Emoji**.
-3. Upload all the `.png` or `.gif` files from the `custom_emojis` folder.
-4. (Optional) If the emoji names or IDs change, you can update them in `src/structures/ActionUtils.js` or `config.js` to match your newly uploaded emojis.
+2. Go to the [Discord Developer Portal](https://discord.com/developers/applications/).
+3. Select your Bot Application, and navigate to the **Emojis** tab on the left sidebar.
+4. Upload all the `.png` or `.gif` files from the `custom_emojis` folder.
+5. (Optional) If the emoji names or IDs change, you can update them in `src/structures/ActionUtils.js` or `config.js` to match your newly uploaded emojis.
 
 ---
 
