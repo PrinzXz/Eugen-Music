@@ -69,7 +69,7 @@ To ensure the UI looks correct, you must upload the provided emojis to your Bot'
 2. Go to the [Discord Developer Portal](https://discord.com/developers/applications/).
 3. Select your Bot Application, and navigate to the **Emojis** tab on the left sidebar.
 4. Upload all the `.png` or `.gif` files from the `custom_emojis` folder.
-5. (Optional) If the emoji names or IDs change, you can update them in `src/structures/ActionUtils.js` or `config.js` to match your newly uploaded emojis.
+5. (Optional) If the emoji names or IDs change, you can update them in `config.js` to match your newly uploaded emojis.
 
 ---
 
