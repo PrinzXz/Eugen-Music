@@ -84,9 +84,8 @@ async function resolveQuery(node, query, client, ctx) {
 
     const isUrl = /^https?:\/\//.test(query);
     const isSpotify = query.includes('spotify.com');
-    const searchStr = isUrl ? query : `ytsearch:${query}`;
 
-    result = await resolveWithFallback(node, searchStr);
+    result = await resolveWithFallback(node, query, isUrl);
 
     if (!result || result.loadType === 'empty' || result.loadType === 'error') {
         if (isSpotify) {
@@ -104,24 +103,27 @@ async function resolveQuery(node, query, client, ctx) {
     return { result, allSpotifyTracks, spotifyPlaylistData };
 }
 
-async function resolveWithFallback(node, searchStr) {
-    try {
-        const result = await node.rest.resolve(searchStr);
-        if (result && result.loadType !== 'empty' && result.loadType !== 'error') return result;
-        if (searchStr.startsWith('ytsearch:')) {
-            return await node.rest.resolve(searchStr.replace('ytsearch:', 'scsearch:'));
+async function resolveWithFallback(node, query, isUrl) {
+    if (isUrl) {
+        try {
+            return await node.rest.resolve(query);
+        } catch {
+            return null;
         }
-        return result;
-    } catch {
-        if (searchStr.startsWith('ytsearch:')) {
-            try {
-                return await node.rest.resolve(searchStr.replace('ytsearch:', 'scsearch:'));
-            } catch {
-                return null;
-            }
-        }
-        return null;
     }
+
+    for (const provider of SEARCH_PROVIDERS) {
+        try {
+            const result = await node.rest.resolve(`${provider}:${query}`);
+            if (result && result.loadType !== 'empty' && result.loadType !== 'error') {
+                return result;
+            }
+        } catch {
+            // Lanjut ke provider berikutnya jika terjadi error
+            continue;
+        }
+    }
+    return null;
 }
 
 async function resolveSpotify(node, query, client, ctx, e) {
