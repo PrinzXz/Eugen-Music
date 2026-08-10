@@ -85,18 +85,17 @@ async function resolveQuery(node, query, client, ctx) {
     const isUrl = /^https?:\/\//.test(query);
     const isSpotify = query.includes('spotify.com');
 
-    result = await resolveWithFallback(node, query, isUrl);
-
-    if (!result || result.loadType === 'empty' || result.loadType === 'error') {
-        if (isSpotify) {
-            const spotifyResult = await resolveSpotify(node, query, client, ctx, e);
-            if (!spotifyResult) return { result: null, allSpotifyTracks, spotifyPlaylistData };
-            result = spotifyResult.result;
-            allSpotifyTracks = spotifyResult.allSpotifyTracks || [];
-            spotifyPlaylistData = spotifyResult.spotifyPlaylistData;
-        } else {
+    if (isSpotify) {
+        const spotifyResult = await resolveSpotify(node, query, client, ctx, e);
+        if (!spotifyResult) return { result: null, allSpotifyTracks, spotifyPlaylistData };
+        result = spotifyResult.result;
+        allSpotifyTracks = spotifyResult.allSpotifyTracks || [];
+        spotifyPlaylistData = spotifyResult.spotifyPlaylistData;
+    } else {
+        result = await resolveWithFallback(node, query, isUrl);
+        if (!result || result.loadType === 'empty' || result.loadType === 'error') {
             await ctx.send(`${e.error} ${ctx.t('play.not_found')}`, true);
-            return { result: null, allSpotifyTracks, spotifyPlaylistData };
+            return { result: null, allSpotifyTracks: [], spotifyPlaylistData: null };
         }
     }
 
@@ -164,7 +163,17 @@ async function resolveSpotify(node, query, client, ctx, e) {
 
         if (data.type === 'track') {
             const artist = data.artists?.[0]?.name || data.artist || '';
-            const result = await node.rest.resolve(`ytsearch:${data.name} ${artist}`);
+            let result = null;
+            const searchQueries = [
+                `ytmsearch:${data.name} ${artist}`,
+                `ytsearch:${data.name} ${artist} official audio`,
+                `ytsearch:${data.name} ${artist}`,
+                `scsearch:${data.name} ${artist}`
+            ];
+            for (const q of searchQueries) {
+                result = await node.rest.resolve(q);
+                if (result && result.loadType !== 'empty' && result.loadType !== 'error') break;
+            }
             if (result?.data) {
                 const trk = Array.isArray(result.data) ? result.data[0] : result.data;
                 if (trk?.info) { trk.info.title = data.name; trk.info.author = artist; }
@@ -181,9 +190,14 @@ async function resolveSpotify(node, query, client, ctx, e) {
             const firstTrack = tracks[0];
             const artist = firstTrack.artists?.[0]?.name || firstTrack.artist || '';
             let result = null;
-
-            for (const provider of SEARCH_PROVIDERS) {
-                result = await node.rest.resolve(`${provider}:${firstTrack.name} ${artist}`);
+            const searchQueries = [
+                `ytmsearch:${firstTrack.name} ${artist}`,
+                `ytsearch:${firstTrack.name} ${artist} official audio`,
+                `ytsearch:${firstTrack.name} ${artist}`,
+                `scsearch:${firstTrack.name} ${artist}`
+            ];
+            for (const q of searchQueries) {
+                result = await node.rest.resolve(q);
                 if (result && result.loadType !== 'empty' && result.loadType !== 'error') break;
             }
 
@@ -327,9 +341,14 @@ async function handleSpotifyPagination(ctx, dispatcher, node, allSpotifyTracks, 
             try {
                 const artist = t.artists?.[0]?.name || t.artist || '';
                 let resolved = null;
-
-                for (const provider of SEARCH_PROVIDERS) {
-                    resolved = await node.rest.resolve(`${provider}:${t.name} ${artist}`);
+                const searchQueries = [
+                    `ytmsearch:${t.name} ${artist}`,
+                    `ytsearch:${t.name} ${artist} official audio`,
+                    `ytsearch:${t.name} ${artist}`,
+                    `scsearch:${t.name} ${artist}`
+                ];
+                for (const q of searchQueries) {
+                    resolved = await node.rest.resolve(q);
                     if (resolved && resolved.loadType !== 'empty' && resolved.loadType !== 'error') break;
                 }
 
